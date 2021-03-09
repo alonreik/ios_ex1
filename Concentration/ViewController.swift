@@ -17,7 +17,6 @@ class ViewController: UIViewController {
         }
     }
     
-    
     @IBOutlet weak var flipCountLabel: UILabel!
     
     @IBOutlet var cardButtons: [UIButton]!
@@ -59,8 +58,4 @@ class ViewController: UIViewController {
         
         return emoji[card.identifier] ?? "?"
     }
-    
-    
-    
-
 }
