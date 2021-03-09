@@ -39,6 +39,6 @@ class Concentration
             cards.append(card)
             cards.append(card) // The matching card 
         }
-        // TODO: Shuffle the cards
+        cards.shuffle()
     }
 }
