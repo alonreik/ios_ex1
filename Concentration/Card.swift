@@ -24,4 +24,10 @@ struct Card
         self.identifier = Card.getUniqueIdentifier()
     }
     
+    // Resets a card object to its initial values.
+    mutating func resetCard() {
+        isFaceUp = false
+        isMatched = false
+    }
+    
 }

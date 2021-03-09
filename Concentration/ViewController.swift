@@ -30,6 +30,16 @@ class ViewController: UIViewController {
             print("chosen card was not in cardButtons")
         }
     }
+    
+    // Resets the score(flipCount) and flips back all cards.
+    @IBAction func startNewGame(_ sender: UIButton) {
+        flipCount = 0
+        for index in cardButtons.indices {
+            game.cards[index].resetCard()
+            cardButtons[index].setTitle("", for: UIControl.State.normal)
+            cardButtons[index].backgroundColor =  #colorLiteral(red: 1, green: 0.5781051517, blue: 0, alpha: 1)
+        }
+    }
 
     func updateViewFromModel() {
         for index in cardButtons.indices {
@@ -58,4 +68,5 @@ class ViewController: UIViewController {
         
         return emoji[card.identifier] ?? "?"
     }
+    
 }
