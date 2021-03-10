@@ -10,6 +10,7 @@ import Foundation
 class Concentration
 {
     var score = 0
+    var flipCount = 0
     var cards = [Card]()
     var indexOfOneAndOnlyFaceUpCard: Int?
     
@@ -59,6 +60,7 @@ class Concentration
     
     // Resets all Card objects and the score counting.
     func resetGame() {
+        flipCount = 0
         score = 0
         for index in cards.indices {
             cards[index].resetCard()
