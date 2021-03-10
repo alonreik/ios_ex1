@@ -9,9 +9,21 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    var gameTimer: Timer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         startNewGame()
+        gameTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateScoreForTime), userInfo: nil, repeats: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        gameTimer?.invalidate()
+    }
+    
+    @objc func updateScoreForTime() {
+        game.score -= 1
     }
     
     lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2)
@@ -39,11 +51,13 @@ class ViewController: UIViewController {
         startNewGame()
     }
     
+    // Resets all Model and View properties
     func startNewGame() {
         emojiChoices = themesEmojies.randomElement()! // choose a new random theme
         background.backgroundColor = themeColors[emojiChoices.key]!.1
         emoji.removeAll() // clear previous mapping between cards and emojis
         game.resetGame()
+        
         updateViewFromModel()
     }
 
