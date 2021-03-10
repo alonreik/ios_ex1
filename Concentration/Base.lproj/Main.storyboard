@@ -190,6 +190,7 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <connections>
+                        <outlet property="background" destination="8bC-Xf-vdC" id="GqU-QD-jA0"/>
                         <outlet property="flipCountLabel" destination="NYH-mD-kgh" id="MiW-kh-1Al"/>
                         <outlet property="scoreLabel" destination="n2y-dL-ZXH" id="2a8-SQ-ZMg"/>
                         <outletCollection property="cardButtons" destination="HOz-C1-f29" collectionClass="NSMutableArray" id="P3I-Pu-V6u"/>

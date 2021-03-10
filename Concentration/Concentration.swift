@@ -65,5 +65,6 @@ class Concentration
         for index in cards.indices {
             cards[index].resetCard()
         }
+        cards.shuffle()
     }
 }
