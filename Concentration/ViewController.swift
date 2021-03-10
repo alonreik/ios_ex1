@@ -17,6 +17,8 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBOutlet weak var scoreLabel: UILabel!
+    
     @IBOutlet weak var flipCountLabel: UILabel!
     
     @IBOutlet var cardButtons: [UIButton]!
@@ -36,15 +38,17 @@ class ViewController: UIViewController {
         flipCount = 0
         emojiChoices = themes.randomElement()!.value // choose a new random theme
         emoji.removeAll() // clear previous mapping between cards and emojis
+        game.resetGame()
         for index in cardButtons.indices {
-            game.cards[index].resetCard()
             cardButtons[index].setTitle("", for: UIControl.State.normal)
             cardButtons[index].backgroundColor =  #colorLiteral(red: 1, green: 0.5781051517, blue: 0, alpha: 1)
         }
+        updateViewFromModel()
     }
 
     func updateViewFromModel() {
-        for index in cardButtons.indices {
+        scoreLabel.text = "Score: \(game.score)"
+        for index in cardButtons.indices { // making sure every card is viewed correctly
             let button = cardButtons[index]
             let card = game.cards[index]
             if card.isFaceUp {

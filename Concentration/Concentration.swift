@@ -9,19 +9,34 @@ import Foundation
 
 class Concentration
 {
+    var score = 0
     var cards = [Card]()
     var indexOfOneAndOnlyFaceUpCard: Int?
     
     func chooseCard(at index: Int) {
         if !cards[index].isMatched {
+            
             if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != index {
-                // check if cards match
-                if cards[matchIndex].identifier == cards[index].identifier {
+                // if another card is already facing up:
+                if cards[matchIndex].identifier == cards[index].identifier { // if cards match:
                     cards[matchIndex].isMatched = true
                     cards[index].isMatched = true
-                }
+                    score += 2
+                } else { // if cards don't match:
+                    var penalty = 0
+                    if cards[index].wasSeen, cards[matchIndex].wasSeen {
+                        penalty += 2
+                    }
+                    else if cards[matchIndex].wasSeen || cards[index].wasSeen {
+                        penalty += 1
+                    }
+                    score -= penalty
+                } // things to do every time a second card in a turn is picked:
+                cards[index].wasSeen = true
+                cards[matchIndex].wasSeen = true
                 cards[index].isFaceUp = true
                 indexOfOneAndOnlyFaceUpCard = nil
+            
             } else {
                 // either no cards or 2 cards are face up
                 for flipDownIndex in cards.indices {
@@ -40,5 +55,13 @@ class Concentration
             cards.append(card) // The matching card 
         }
         cards.shuffle()
+    }
+    
+    // Resets all Card objects and the score counting.
+    func resetGame() {
+        score = 0
+        for index in cards.indices {
+            cards[index].resetCard()
+        }
     }
 }
