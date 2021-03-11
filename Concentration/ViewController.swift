@@ -13,8 +13,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        startNewGame()
         gameTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateScoreForTime), userInfo: nil, repeats: true)
+        startNewGame()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -53,10 +53,16 @@ class ViewController: UIViewController {
     
     // Resets all Model and View properties
     func startNewGame() {
-        emojiChoices = themesDict.randomElement()! // choose a new random theme
-        background.backgroundColor = themesDict[emojiChoices.key]!.2
+        // choose a new random theme (default theme is Halloween)
+        emojiChoices = themesDict.randomElement() ?? (key: "Halloween", value:(["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"], #colorLiteral(red: 1, green: 0.5781051517, blue: 0, alpha: 1), #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)))
+        
+        background.backgroundColor = emojiChoices.value.2
         emoji.removeAll() // clear previous mapping between cards and emojis
         game.resetGame()
+        
+        // reset timer
+        gameTimer?.invalidate()
+        gameTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(updateScoreForTime), userInfo: nil, repeats: true)
         
         updateViewFromModel()
     }
@@ -72,6 +78,7 @@ class ViewController: UIViewController {
                 button.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
             } else {
                 button.setTitle("", for: UIControl.State.normal)
+                // Alon Reik: I know that this is bad practice but the lecturer wrote this code
                 button.backgroundColor = card.isMatched ? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0) : themesDict[emojiChoices.key]!.1
             }
         }
@@ -89,7 +96,9 @@ class ViewController: UIViewController {
                       "Flags": (["🏳️‍🌈", "🏳️", "🏴","🏴‍☠️","🏁","🇧🇿","🇫🇯","🇹🇭","🇮🇳"], #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1))
                     ]
     
-    lazy var emojiChoices = themesDict.randomElement()!
+    // The theme of the game (default theme is halloween).
+    lazy var emojiChoices = themesDict.randomElement() ??
+        (key: "Halloween", value:(["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"], #colorLiteral(red: 1, green: 0.5781051517, blue: 0, alpha: 1), #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)))
 
     // A dictionary mapping an identifier of a card (Int) to an emoji (String)
     var emoji = [Int: String]()
