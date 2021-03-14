@@ -51,12 +51,29 @@ class ViewController: UIViewController {
         startNewGame()
     }
     
+    // AlonReik - This is just a place holder that will be replaced by a valid GameTheme object every time a
+    // new game begins (it is lazy because it needs to use other properties of the ViewController).
+    lazy var gameTheme = GameTheme(emojis: emojies[0], cardsColor: cardColors[0], bgColor: bgColors[0])
+    
+    let emojies = [["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"],
+                   ["🙀", "🦇", "🐱", "🐥", "🐦", "🦉", "🐺", "🦄", "🐷" ],
+                   ["⚽️", "🥎", "⚾️", "🥋", "🎽", "🥏", "🤿","🏒", "🏉"],
+                   ["🍭", "🎃", "🍎", "🍬", "🍌", "🥝" ,"🍞", "🥕", "🥯"],
+                   ["😱", "😀", "😋", "🥸", "😜", "🥳", "😛", "🤩", "😏"],
+                   ["🏳️‍🌈", "🏳️", "🏴","🏴‍☠️","🏁","🇧🇿","🇫🇯","🇹🇭","🇮🇳"]
+                   ]
+    
+    let cardColors = [#colorLiteral(red: 1, green: 0.5781051517, blue: 0, alpha: 1), #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1), #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1), #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1), #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1), #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)]
+    
+    let bgColors = [#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), #colorLiteral(red: 0.7254902124, green: 0.4784313738, blue: 0.09803921729, alpha: 1), #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1), #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1), #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1), #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)]
+    
     // Resets all Model and View properties
     func startNewGame() {
-        // choose a new random theme (default theme is Halloween)
-        gameTheme = GameTheme()
-        
+        // choose a new random theme.
+        let themeIndex = Int.random(in: 0..<emojies.count)
+        gameTheme = GameTheme(emojis: emojies[themeIndex], cardsColor: cardColors[themeIndex], bgColor: bgColors[themeIndex])
         background.backgroundColor = gameTheme.bgColor
+        
         emoji.removeAll() // clear previous mapping between cards and emojis
         game.resetGame()
         
@@ -82,47 +99,30 @@ class ViewController: UIViewController {
             }
         }
     }
-    
-    var gameTheme = GameTheme()
 
     // A dictionary mapping an identifier of a card (Int) to an emoji (String)
     var emoji = [Int: String]()
     
     // Assigns the given card with an emoji from the emojiChoices array.
     func emoji(for card: Card) -> String {
-        let numOfEmojiChoices = gameTheme.emojis.count
+        let numOfEmojiChoices = gameTheme.emojies.count
         if emoji[card.identifier] == nil, numOfEmojiChoices > 0 {
             let randomIndex = Int(arc4random_uniform(UInt32(numOfEmojiChoices)))
-            emoji[card.identifier] = gameTheme.emojis.remove(at: randomIndex)
+            emoji[card.identifier] = gameTheme.emojies.remove(at: randomIndex)
         }
         return emoji[card.identifier] ?? "?"
     }
 }
 
-
 class GameTheme {
 
-    static let emojies = [["🦇", "😱", "🙀", "😈", "🎃", "👻", "🍭", "🍬", "🍎"],
-                        ["🙀", "🦇", "🐱", "🐥", "🐦", "🦉", "🐺", "🦄", "🐷" ],
-                        ["⚽️", "🥎", "⚾️", "🥋", "🎽", "🥏", "🤿","🏒", "🏉"],
-                        ["🍭", "🎃", "🍎", "🍬", "🍌", "🥝" ,"🍞", "🥕", "🥯"],
-                        ["😱", "😀", "😋", "🥸", "😜", "🥳", "😛", "🤩", "😏"],
-                        ["🏳️‍🌈", "🏳️", "🏴","🏴‍☠️","🏁","🇧🇿","🇫🇯","🇹🇭","🇮🇳"]
-                        ]
-    
-    static let cardColors = [#colorLiteral(red: 1, green: 0.5781051517, blue: 0, alpha: 1), #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1), #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1), #colorLiteral(red: 0.8549019694, green: 0.250980407, blue: 0.4784313738, alpha: 1), #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1), #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)]
-    
-    static let bgColors = [#colorLiteral(red: 0, green: 0, blue: 0, alpha: 1), #colorLiteral(red: 0.7254902124, green: 0.4784313738, blue: 0.09803921729, alpha: 1), #colorLiteral(red: 0.9764705896, green: 0.850980401, blue: 0.5490196347, alpha: 1), #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1), #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1), #colorLiteral(red: 0.2588235438, green: 0.7568627596, blue: 0.9686274529, alpha: 1)]
-    
-    let themeIndex: Int
-    var emojis: [String]
+    var emojies: [String]
     let cardsColor: UIColor
     let bgColor: UIColor
     
-    init(){
-        self.themeIndex = Int.random(in: 0..<GameTheme.emojies.count)
-        self.emojis = GameTheme.emojies[themeIndex]
-        self.cardsColor = GameTheme.cardColors[themeIndex]
-        self.bgColor = GameTheme.bgColors[themeIndex]
+    init(emojis: [String], cardsColor: UIColor, bgColor: UIColor) {
+        self.emojies = emojis
+        self.cardsColor = cardsColor
+        self.bgColor = bgColor
     }
 }
