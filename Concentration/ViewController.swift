@@ -101,7 +101,7 @@ class ViewController: UIViewController {
     var emoji = [Int: String]()
     
     // The current set of emojies.
-    var emojies = [""]
+    var emojies: [String] = []
     
     // Assigns the given card with an emoji from the emojiChoices array.
     func emoji(for card: Card) -> String {
