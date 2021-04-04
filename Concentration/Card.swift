@@ -9,6 +9,7 @@ import Foundation
 
 struct Card
 {
+    var wasSeen = false
     var isFaceUp = false
     var isMatched = false
     var identifier: Int
@@ -22,6 +23,13 @@ struct Card
     
     init() {
         self.identifier = Card.getUniqueIdentifier()
+    }
+    
+    // Resets a card object to its initial values.
+    mutating func resetCard() {
+        isFaceUp = false
+        isMatched = false
+        wasSeen = false
     }
     
 }
